@@ -8,10 +8,10 @@
     name: common
     tasks_from: nodejs-setup.yaml
 
-- name: copying catalogue service file
-  ansible.builtin.template:
-    src: catalogue.service
-    dest: /etc/systemd/system/catalogue.service
+- name: systemd setup
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: systemd-setup.yaml
 
 - name: copy mongo repo
   ansible.builtin.copy:
@@ -34,10 +34,6 @@
 - name: load the products
   ansible.builtin.shell: mongosh --host "{{ MONGODB_HOST }}" </app/db/master-data.js
   when: catalogue_output.stdout  | int < 0
-
-- name: daemon reload
-  ansible.builtin.systemd_service:
-    daemon_reload: true
     
 - name: start catalogue
   ansible.builtin.service:
