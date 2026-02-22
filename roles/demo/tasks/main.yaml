@@ -1,3 +1,0 @@
-- name: test
-  ansible.builtin.debug:
-    msg: "Hi i am a demo file"
